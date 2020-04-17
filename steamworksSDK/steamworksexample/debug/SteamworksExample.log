@@ -1,0 +1,60 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  voicechat.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  VectorEntity.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Sun.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  stdafx.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  StatsAndAchievements.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  StarField.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  SpaceWarServer.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  SpaceWarEntity.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  SpaceWarClient.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Ship.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  ServerBrowser.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  RemoteStorage.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  RemotePlay.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  QuitMenu.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  PhotonBeam.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  p2pauth.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  musicplayer.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  MainMenu.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Main.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Lobby.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Generating Code...
+  Compiling...
+  Leaderboards.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Inventory.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  htmlsurface.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  gameenginewin32.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Friends.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  connectingmenu.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  clanchatroom.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  BaseMenu.cpp
+C:\Users\Klaviam\Documents\Unreal Projects\SteamworksMultiplayer\steamworksSDK\steamworksexample\stdafx.h(58,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Generating Code...
