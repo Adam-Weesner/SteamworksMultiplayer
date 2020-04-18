@@ -6,20 +6,20 @@
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Source Files\Engine">
-      <UniqueIdentifier>{3d15ec0a-70c6-44ba-94b0-4b417a212eac}</UniqueIdentifier>
+      <UniqueIdentifier>{e96cc662-6360-4095-a64d-0beccb1f7f5e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Game">
-      <UniqueIdentifier>{ffdd5590-4215-44f2-8bf7-bb67873fff0c}</UniqueIdentifier>
+      <UniqueIdentifier>{f8d96d59-7372-498f-b399-3a40f03f3942}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Header Files\Engine">
-      <UniqueIdentifier>{adab8a50-5386-4784-a99c-88edb8991d99}</UniqueIdentifier>
+      <UniqueIdentifier>{13e60550-200d-4f3f-9ce0-88caecd90171}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Game">
-      <UniqueIdentifier>{9cd808f3-9b3b-45e9-a622-1fc5581b305d}</UniqueIdentifier>
+      <UniqueIdentifier>{0822ae1c-d59f-49b2-9564-a288e175a9ba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
