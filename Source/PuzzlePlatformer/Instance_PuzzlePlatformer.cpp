@@ -5,6 +5,8 @@
 #include "GameFramework/PlayerController.h"
 #include "OnlineSessionSettings.h"
 
+const static FName SESSION_NAME = TEXT("My Current Session");
+
 UInstance_PuzzlePlatformer::UInstance_PuzzlePlatformer(const FObjectInitializer& ObjectInitializer)
 {
 }
@@ -19,7 +21,8 @@ void UInstance_PuzzlePlatformer::Init()
 
 		if (SessionInterface.IsValid())
 		{
-			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UInstance_PuzzlePlatformer::OnSessionCompleted);
+			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UInstance_PuzzlePlatformer::OnSessionComplete);
+			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UInstance_PuzzlePlatformer::OnDestroySessionComplete);
 		}
 	}
 	else
@@ -28,7 +31,7 @@ void UInstance_PuzzlePlatformer::Init()
 	}
 }
 
-void UInstance_PuzzlePlatformer::OnSessionCompleted(FName SessionName, bool Success)
+void UInstance_PuzzlePlatformer::OnSessionComplete(FName SessionName, bool Success)
 {
 	if (!Success)
 	{
@@ -45,11 +48,33 @@ void UInstance_PuzzlePlatformer::OnSessionCompleted(FName SessionName, bool Succ
 	NextMap();
 }
 
+void UInstance_PuzzlePlatformer::OnDestroySessionComplete(FName SessionName, bool Success)
+{
+	if (Success)
+	{
+		CreateOnlineSession();
+	}
+}
+
+void UInstance_PuzzlePlatformer::CreateOnlineSession()
+{
+	FOnlineSessionSettings SessionSettings;
+	SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings);
+}
+
 void UInstance_PuzzlePlatformer::Host()
 {
 	if (!ensure(SessionInterface)) return;
-	FOnlineSessionSettings SessionSettings;
-	SessionInterface->CreateSession(0, TEXT("My Current Session"), SessionSettings);
+
+	auto ExistingSession = SessionInterface->GetNamedSession(SESSION_NAME);
+	if (ExistingSession != nullptr)
+	{
+		SessionInterface->DestroySession(SESSION_NAME);
+	}
+	else
+	{
+		CreateOnlineSession();
+	}
 }
 
 void UInstance_PuzzlePlatformer::Join(const FString address)
@@ -98,12 +123,9 @@ void UInstance_PuzzlePlatformer::ExitGame()
 
 void UInstance_PuzzlePlatformer::LoadMap()
 {
-	if (sessionValid)
-	{
-		UWorld* World = GetWorld();
-		if (!ensure(World)) return;
+	UWorld* World = GetWorld();
+	if (!ensure(World)) return;
 
-		FString LevelPath = Levels[LevelIndex].GetAssetName();
-		World->ServerTravel(LevelPath + "?listen");
-	}
+	FString LevelPath = Levels[LevelIndex].GetAssetName();
+	World->ServerTravel(LevelPath + "?listen");
 }

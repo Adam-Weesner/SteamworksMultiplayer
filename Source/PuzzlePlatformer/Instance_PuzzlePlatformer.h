@@ -36,11 +36,15 @@ public:
 
 private:
 	UFUNCTION()
-	void OnSessionCompleted(FName SessionName, bool Success);
+	void OnSessionComplete(FName SessionName, bool Success);
+
+	UFUNCTION()
+	void OnDestroySessionComplete(FName SessionName, bool Success);
+
+	void CreateOnlineSession();
 
 	void LoadMap();
 
 	IOnlineSessionPtr SessionInterface;
 	int LevelIndex = 0;
-	bool sessionValid = false;
 };
