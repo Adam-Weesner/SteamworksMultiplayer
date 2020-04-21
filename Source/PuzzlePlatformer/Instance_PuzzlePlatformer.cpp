@@ -3,6 +3,7 @@
 #include "Engine/Engine.h"
 #include "Misc/Paths.h" 	
 #include "GameFramework/PlayerController.h"
+#include "OnlineSessionSettings.h"
 
 UInstance_PuzzlePlatformer::UInstance_PuzzlePlatformer(const FObjectInitializer& ObjectInitializer)
 {
@@ -10,22 +11,31 @@ UInstance_PuzzlePlatformer::UInstance_PuzzlePlatformer(const FObjectInitializer&
 
 void UInstance_PuzzlePlatformer::Init()
 {
-	Subsystem = IOnlineSubsystem::Get();
-
-	if (!ensure(Subsystem)) return;
-
-	UE_LOG(LogTemp, Warning, TEXT("Valid: %s"), *Subsystem->GetOnlineServiceName().ToString());
-
-	IOnlineSessionPtr SessionInterface = Subsystem->GetSessionInterface();
-
-	if (SessionInterface.IsValid())
+	IOnlineSubsystem* Subsystem = IOnlineSubsystem::Get();
+	if (Subsystem != nullptr) 
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Found subsystem %s!"), *Subsystem->GetSubsystemName().ToString());
+		SessionInterface = Subsystem->GetSessionInterface();
 
+		if (SessionInterface.IsValid())
+		{
+			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UInstance_PuzzlePlatformer::OnSessionCompleted);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ERROR - Found no subsystem!"));
 	}
 }
 
-void UInstance_PuzzlePlatformer::Host()
+void UInstance_PuzzlePlatformer::OnSessionCompleted(FName SessionName, bool Success)
 {
+	if (!Success)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ERROR - Couldn't create session!"));
+		return;
+	}
+
 	UEngine* Engine = GetEngine();
 	if (!ensure(Engine)) return;
 
@@ -33,6 +43,13 @@ void UInstance_PuzzlePlatformer::Host()
 	Engine->AddOnScreenDebugMessage(0, 5.0f, FColor::Yellow, output);
 
 	NextMap();
+}
+
+void UInstance_PuzzlePlatformer::Host()
+{
+	if (!ensure(SessionInterface)) return;
+	FOnlineSessionSettings SessionSettings;
+	SessionInterface->CreateSession(0, TEXT("My Current Session"), SessionSettings);
 }
 
 void UInstance_PuzzlePlatformer::Join(const FString address)
@@ -81,9 +98,12 @@ void UInstance_PuzzlePlatformer::ExitGame()
 
 void UInstance_PuzzlePlatformer::LoadMap()
 {
-	UWorld* World = GetWorld();
-	if (!ensure(World)) return;
+	if (sessionValid)
+	{
+		UWorld* World = GetWorld();
+		if (!ensure(World)) return;
 
-	FString LevelPath = Levels[LevelIndex].GetAssetName();
-	World->ServerTravel(LevelPath + "?listen");
+		FString LevelPath = Levels[LevelIndex].GetAssetName();
+		World->ServerTravel(LevelPath + "?listen");
+	}
 }

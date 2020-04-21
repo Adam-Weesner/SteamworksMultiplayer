@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "OnlineSubsystem.h"
+#include "Interfaces/OnlineSessionInterface.h"
 #include "Blueprint/UserWidget.h"
 #include "Instance_PuzzlePlatformer.generated.h"
 
@@ -15,13 +16,13 @@ public:
 	UInstance_PuzzlePlatformer(const FObjectInitializer& ObjectInitializer);
 	virtual void Init() override;
 
-	UFUNCTION(Exec)
+	UFUNCTION()
 	void Host();
 
-	UFUNCTION(Exec)
+	UFUNCTION()
 	void Join(const FString address);
 
-	UFUNCTION(Exec)
+	UFUNCTION()
 	void NextMap();
 
 	UFUNCTION()
@@ -34,8 +35,12 @@ public:
 	TArray<TAssetPtr<UWorld>> Levels;
 
 private:
+	UFUNCTION()
+	void OnSessionCompleted(FName SessionName, bool Success);
+
 	void LoadMap();
 
-	IOnlineSubsystem* Subsystem;
+	IOnlineSessionPtr SessionInterface;
 	int LevelIndex = 0;
+	bool sessionValid = false;
 };
