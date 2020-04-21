@@ -13,10 +13,18 @@ void UMainMenu::PopulateServerRows(TArray<FString> ServerNames)
 
 	ServerList->ClearChildren();
 
+	uint32 i = 0;
+
 	for (const FString& ServerName : ServerNames)
 	{
 		UServerRow* Row = CreateWidget<UServerRow>(World, WBP_ServerRow);
+
+		if (!ensure(Row)) return;
+
 		Row->ServerName->SetText(FText::FromString(ServerName));
+		Row->Setup(this, i);
+		++i;
+
 		ServerList->AddChild(Row);
 	}
 }
@@ -39,6 +47,11 @@ bool UMainMenu::BindWidgets()
 	RefreshButton->OnReleased.AddDynamic(this, &UMainMenu::OnRefreshButtonReleased);
 
 	return true;
+}
+
+void UMainMenu::SelectIndex(uint32 Index)
+{
+	SelectedIPIndex = Index;
 }
 
 void UMainMenu::OnHostButtonReleased()
@@ -66,12 +79,16 @@ void UMainMenu::OnExitButtonReleased()
 
 void UMainMenu::OnJoinButtonReleased()
 {
-	//const FString &ipAddressInput = IPAddressTextBox->GetText().ToString();
-
-	//if (ipAddressInput.IsEmpty()) return;
-
-	if (!ensure(MenuInterface)) return;
-	MenuInterface->Join("");
+	if (SelectedIPIndex.IsSet())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Selected Index: %d"), SelectedIPIndex.GetValue());
+		if (!ensure(MenuInterface)) return;
+		MenuInterface->Join("");
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ERROR - Select a server!"));
+	}
 }
 
 void UMainMenu::OnBackButtonReleased()

@@ -4,6 +4,7 @@
 #include "Misc/Paths.h"
 #include "GameFramework/PlayerController.h"
 #include "OnlineSessionSettings.h"
+#include "UMGHandler.h"
 
 const static FName SESSION_NAME = TEXT("My Current Session");
 
@@ -70,7 +71,7 @@ void UInstance_PuzzlePlatformer::OnFindSessionsComplete(bool Success)
 			UE_LOG(LogTemp, Warning, TEXT("Found session names: %s"), *SearchResult.GetSessionIdStr());
 			ServerNames.Add(SearchResult.GetSessionIdStr());
 		}
-
+ 
 		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 		if (!ensure(PlayerController)) return;
 

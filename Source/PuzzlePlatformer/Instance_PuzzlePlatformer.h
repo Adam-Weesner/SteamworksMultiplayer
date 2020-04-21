@@ -6,7 +6,6 @@
 #include "Interfaces/OnlineSessionInterface.h"
 #include "MenuSystem/Interface_MainMenu.h"
 #include "Blueprint/UserWidget.h"
-#include "UMGHandler.h"
 #include "Instance_PuzzlePlatformer.generated.h"
 
 UCLASS()

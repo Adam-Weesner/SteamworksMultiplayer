@@ -18,9 +18,9 @@ class PUZZLEPLATFORMER_API UMainMenu : public UMenuWidget
 
 public:
 	void PopulateServerRows(TArray<FString> ServerNames);
+	void SelectIndex(uint32 Index);
 
 protected:
-
 	UFUNCTION()
 	virtual void OnJoinButtonReleased();
 
@@ -76,4 +76,6 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UScrollBox* ServerList;
+
+	TOptional<uint32> SelectedIPIndex;
 };
