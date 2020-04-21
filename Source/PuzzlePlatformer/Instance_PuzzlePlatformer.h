@@ -6,6 +6,7 @@
 #include "Interfaces/OnlineSessionInterface.h"
 #include "MenuSystem/Interface_MainMenu.h"
 #include "Blueprint/UserWidget.h"
+#include "OnlineSessionSettings.h"
 #include "Instance_PuzzlePlatformer.generated.h"
 
 UCLASS()
@@ -24,24 +25,19 @@ public:
 	TArray<TAssetPtr<UWorld>> Levels;
 
 private:
-	UFUNCTION()
 	void OnSessionComplete(FName SessionName, bool Success);
-
-	UFUNCTION()
 	void OnDestroySessionComplete(FName SessionName, bool Success);
-
-	UFUNCTION()
 	void OnFindSessionsComplete(bool Success);
+	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 
 	void CreateOnlineSession();
-
 	void LoadMap();
 
 	UFUNCTION()
 	virtual void Host() override;
 
 	UFUNCTION()
-	virtual void Join(const FString IPAddress) override;
+	virtual void Join(const uint32 Address) override;
 
 	UFUNCTION()
 	virtual void PopulateServers() override;
@@ -51,6 +47,7 @@ private:
 
 	UFUNCTION()
 	void ExitGame() override;
+
 
 	IOnlineSessionPtr SessionInterface;
 	TSharedPtr<FOnlineSessionSearch> SessionSearch;

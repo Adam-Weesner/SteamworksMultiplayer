@@ -77,5 +77,5 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UScrollBox* ServerList;
 
-	TOptional<uint32> SelectedIPIndex;
+	TOptional<uint32> SelectedAddressIndex;
 };

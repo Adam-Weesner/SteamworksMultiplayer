@@ -51,7 +51,7 @@ bool UMainMenu::BindWidgets()
 
 void UMainMenu::SelectIndex(uint32 Index)
 {
-	SelectedIPIndex = Index;
+	SelectedAddressIndex = Index;
 }
 
 void UMainMenu::OnHostButtonReleased()
@@ -79,11 +79,11 @@ void UMainMenu::OnExitButtonReleased()
 
 void UMainMenu::OnJoinButtonReleased()
 {
-	if (SelectedIPIndex.IsSet())
+	if (SelectedAddressIndex.IsSet())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Selected Index: %d"), SelectedIPIndex.GetValue());
+		UE_LOG(LogTemp, Warning, TEXT("Selected Index: %d"), SelectedAddressIndex.GetValue());
 		if (!ensure(MenuInterface)) return;
-		MenuInterface->Join("");
+		MenuInterface->Join(SelectedAddressIndex.GetValue());
 	}
 	else
 	{

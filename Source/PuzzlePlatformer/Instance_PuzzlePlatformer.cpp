@@ -3,7 +3,6 @@
 #include "Engine/Engine.h"
 #include "Misc/Paths.h"
 #include "GameFramework/PlayerController.h"
-#include "OnlineSessionSettings.h"
 #include "UMGHandler.h"
 
 const static FName SESSION_NAME = TEXT("My Current Session");
@@ -27,6 +26,7 @@ void UInstance_PuzzlePlatformer::Init()
 			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UInstance_PuzzlePlatformer::OnSessionComplete);
 			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UInstance_PuzzlePlatformer::OnDestroySessionComplete);
 			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UInstance_PuzzlePlatformer::OnFindSessionsComplete);
+			SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &UInstance_PuzzlePlatformer::OnJoinSessionComplete);
 		}
 	}
 	else
@@ -82,6 +82,29 @@ void UInstance_PuzzlePlatformer::OnFindSessionsComplete(bool Success)
 	}
 }
 
+void UInstance_PuzzlePlatformer::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
+{
+	if (!SessionInterface.IsValid()) return;
+
+	if (Result == EOnJoinSessionCompleteResult::Success)
+	{
+		FString Address;
+		bool Valid = SessionInterface->GetResolvedConnectString(SessionName, Address);
+		if (!Valid) return;
+
+		UEngine* Engine = GetEngine();
+		if (!Engine) return;
+		FString output = "Joining: " + Address;
+
+		Engine->AddOnScreenDebugMessage(0, 5.0f, FColor::Yellow, output);
+
+		APlayerController* PlayerController = GetFirstLocalPlayerController();
+		if (!ensure(PlayerController)) return;
+
+		PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
+	}
+}
+
 void UInstance_PuzzlePlatformer::CreateOnlineSession()
 {
 	if (SessionInterface.IsValid())
@@ -109,18 +132,12 @@ void UInstance_PuzzlePlatformer::Host()
 	}
 }
 
-void UInstance_PuzzlePlatformer::Join(const FString IPAddress)
+void UInstance_PuzzlePlatformer::Join(const uint32 Index)
 {
-	UEngine* Engine = GetEngine();
-	if (!Engine) return;
-	FString output = "Joining: " + IPAddress;
+	if (!SessionInterface.IsValid()) return;
+	if (!SessionSearch.IsValid()) return;
 
-	Engine->AddOnScreenDebugMessage(0, 5.0f, FColor::Yellow, output);
-
-	APlayerController* PlayerController = GetFirstLocalPlayerController();
-	if (!ensure(PlayerController)) return;
-
-	PlayerController->ClientTravel(IPAddress, ETravelType::TRAVEL_Absolute);
+	SessionInterface->JoinSession(0, SESSION_NAME, SessionSearch->SearchResults[Index]);
 }
 
 void UInstance_PuzzlePlatformer::PopulateServers()
