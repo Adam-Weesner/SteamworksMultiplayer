@@ -4,6 +4,7 @@
 #include "GameFramework/HUD.h"
 #include "Blueprint/UserWidget.h"
 #include "MenuSystem/Interface_MainMenu.h"
+#include "MenuSystem/MainMenu.h"
 #include "Instance_PuzzlePlatformer.h"
 #include "UMGHandler.generated.h"
 
@@ -23,6 +24,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleInGameMenu();
 
+	void SetServerList(TArray<FString> ServerNames);
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> WBP_MainMenu;
 
@@ -30,6 +33,7 @@ public:
 	TSubclassOf<UUserWidget> WBP_InGameMenu;
 
 private:
-	UInstance_PuzzlePlatformer* Instance;
+	class UInstance_PuzzlePlatformer* Instance;
 	APlayerController* PlayerController;
+	UMainMenu* Menu;
 };

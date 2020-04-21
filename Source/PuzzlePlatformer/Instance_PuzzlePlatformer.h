@@ -6,6 +6,7 @@
 #include "Interfaces/OnlineSessionInterface.h"
 #include "MenuSystem/Interface_MainMenu.h"
 #include "Blueprint/UserWidget.h"
+#include "UMGHandler.h"
 #include "Instance_PuzzlePlatformer.generated.h"
 
 UCLASS()
@@ -22,8 +23,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TArray<TAssetPtr<UWorld>> Levels;
-
-	TArray<FString> ServerNames;
 
 private:
 	UFUNCTION()
@@ -55,7 +54,6 @@ private:
 	void ExitGame() override;
 
 	IOnlineSessionPtr SessionInterface;
-	int LevelIndex = 0;
-
 	TSharedPtr<FOnlineSessionSearch> SessionSearch;
+	int LevelIndex = 0;
 };

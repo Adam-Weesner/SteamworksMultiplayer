@@ -1,7 +1,6 @@
 // Written by Adam Weesner @2020
 #include "UMGHandler.h"
 #include "Kismet/GameplayStatics.h"
-#include "MenuSystem/MainMenu.h"
 #include "MenuSystem/InGameMenu.h"
 #include "Instance_PuzzlePlatformer.h"
 
@@ -22,12 +21,7 @@ void AUMGHandler::LoadMenu()
 	PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 	if (!ensure(PlayerController)) return;
 
-	UMainMenu* Menu = CreateWidget<UMainMenu>(PlayerController, WBP_MainMenu);
-	
-	if (Menu != nullptr)
-	{
-		Menu->PopulateServerRows(Instance->ServerNames);
-	}
+	Menu = CreateWidget<UMainMenu>(PlayerController, WBP_MainMenu);
 
 	Menu->Setup();
 
@@ -41,12 +35,20 @@ void AUMGHandler::ToggleInGameMenu()
 	PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 	if (!ensure(PlayerController)) return;
 
-	UInGameMenu* Menu = CreateWidget<UInGameMenu>(PlayerController, WBP_InGameMenu);
-	if (!ensure(Menu)) return;
+	UInGameMenu* InGameMenu = CreateWidget<UInGameMenu>(PlayerController, WBP_InGameMenu);
+	if (!ensure(InGameMenu)) return;
 
-	Menu->Setup();
+	InGameMenu->Setup();
 
 	Instance = Cast<UInstance_PuzzlePlatformer>(GetGameInstance());
 	if (!ensure(Instance)) return;
-	Menu->SetMenuInterface(Instance);
+	InGameMenu->SetMenuInterface(Instance);
+}
+
+void AUMGHandler::SetServerList(TArray<FString> ServerNames)
+{
+	if (Menu != nullptr)
+	{
+		Menu->PopulateServerRows(ServerNames);
+	}
 }

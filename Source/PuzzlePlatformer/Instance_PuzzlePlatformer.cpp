@@ -1,7 +1,7 @@
 // Written by Adam Weesner @2020
 #include "Instance_PuzzlePlatformer.h"
 #include "Engine/Engine.h"
-#include "Misc/Paths.h" 	
+#include "Misc/Paths.h"
 #include "GameFramework/PlayerController.h"
 #include "OnlineSessionSettings.h"
 
@@ -13,6 +13,8 @@ UInstance_PuzzlePlatformer::UInstance_PuzzlePlatformer(const FObjectInitializer&
 
 void UInstance_PuzzlePlatformer::Init()
 {
+
+
 	IOnlineSubsystem* Subsystem = IOnlineSubsystem::Get();
 	if (Subsystem != nullptr) 
 	{
@@ -62,12 +64,20 @@ void UInstance_PuzzlePlatformer::OnFindSessionsComplete(bool Success)
 	if (Success && SessionSearch.IsValid())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Found session!"));
-		ServerNames.Empty();
+		TArray<FString> ServerNames;
 		for (const auto& SearchResult : SessionSearch->SearchResults)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Found session names: %s"), *SearchResult.GetSessionIdStr());
 			ServerNames.Add(SearchResult.GetSessionIdStr());
 		}
+
+		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+		if (!ensure(PlayerController)) return;
+
+		AUMGHandler* Hud = Cast<AUMGHandler>(PlayerController->GetHUD());
+		if (!ensure(Hud)) return;
+
+		Hud->SetServerList(ServerNames);
 	}
 }
 
@@ -112,18 +122,6 @@ void UInstance_PuzzlePlatformer::Join(const FString IPAddress)
 	PlayerController->ClientTravel(IPAddress, ETravelType::TRAVEL_Absolute);
 }
 
-void UInstance_PuzzlePlatformer::NextMap()
-{
-	LevelIndex++;
-
-	if (LevelIndex >= Levels.Num())
-	{
-		LevelIndex = 0;
-	}
-
-	LoadMap();
-}
-
 void UInstance_PuzzlePlatformer::PopulateServers()
 {
 	SessionSearch = MakeShareable(new FOnlineSessionSearch());
@@ -150,6 +148,18 @@ void UInstance_PuzzlePlatformer::ExitGame()
 	if (!ensure(PlayerController)) return;
 
 	PlayerController->ConsoleCommand("quit");
+}
+
+void UInstance_PuzzlePlatformer::NextMap()
+{
+	LevelIndex++;
+
+	if (LevelIndex >= Levels.Num())
+	{
+		LevelIndex = 0;
+	}
+
+	LoadMap();
 }
 
 void UInstance_PuzzlePlatformer::LoadMap()
