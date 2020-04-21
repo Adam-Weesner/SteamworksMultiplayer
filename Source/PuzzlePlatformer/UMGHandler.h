@@ -10,7 +10,7 @@
 class UMenuWidget;
 
 UCLASS()
-class PUZZLEPLATFORMER_API AUMGHandler : public AHUD, public IInterface_MainMenu
+class PUZZLEPLATFORMER_API AUMGHandler : public AHUD
 {
 	GENERATED_BODY()
 	
@@ -23,18 +23,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleInGameMenu();
 
-	UFUNCTION()
-	void Host();
-
-	UFUNCTION()
-	void Join(FString ipAddress);
-
-	UFUNCTION()
-	void LeaveServer();
-
-	UFUNCTION()
-	void ExitGame();
-
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> WBP_MainMenu;
 
@@ -42,6 +30,6 @@ public:
 	TSubclassOf<UUserWidget> WBP_InGameMenu;
 
 private:
-	UInstance_PuzzlePlatformer* instance;
+	UInstance_PuzzlePlatformer* Instance;
 	APlayerController* PlayerController;
 };

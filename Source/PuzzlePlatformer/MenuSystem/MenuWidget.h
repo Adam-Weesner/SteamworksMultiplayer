@@ -11,9 +11,9 @@ class PUZZLEPLATFORMER_API UMenuWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	void SetMenuInterface(IInterface_MainMenu* InMenuInterface);
 	void Setup();
 	void TearDown();
+	void SetMenuInterface(IInterface_MainMenu* InMenuInterface);
 
 protected:
 	virtual bool BindWidgets() { return true; };

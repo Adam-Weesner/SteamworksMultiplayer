@@ -11,11 +11,6 @@ bool UMenuWidget::Initialize()
 	return true;
 }
 
-void UMenuWidget::SetMenuInterface(IInterface_MainMenu* InMenuInterface)
-{
-	this->MenuInterface = InMenuInterface;
-}
-
 void UMenuWidget::TearDown()
 {
 	PlayerController = UGameplayStatics::GetPlayerController(this, 0);
@@ -27,6 +22,11 @@ void UMenuWidget::TearDown()
 
 	PlayerController->bShowMouseCursor = false;
 	PlayerController->SetInputMode(inputMode);
+}
+
+void UMenuWidget::SetMenuInterface(IInterface_MainMenu* InMenuInterface)
+{
+	this->MenuInterface = InMenuInterface;
 }
 
 void UMenuWidget::Setup()

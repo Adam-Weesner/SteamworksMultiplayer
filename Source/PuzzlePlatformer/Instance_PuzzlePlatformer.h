@@ -4,11 +4,12 @@
 #include "Engine/GameInstance.h"
 #include "OnlineSubsystem.h"
 #include "Interfaces/OnlineSessionInterface.h"
+#include "MenuSystem/Interface_MainMenu.h"
 #include "Blueprint/UserWidget.h"
 #include "Instance_PuzzlePlatformer.generated.h"
 
 UCLASS()
-class PUZZLEPLATFORMER_API UInstance_PuzzlePlatformer : public UGameInstance
+class PUZZLEPLATFORMER_API UInstance_PuzzlePlatformer : public UGameInstance, public IInterface_MainMenu
 {
 	GENERATED_BODY()
 	
@@ -17,22 +18,12 @@ public:
 	virtual void Init() override;
 
 	UFUNCTION()
-	void Host();
-
-	UFUNCTION()
-	void Join(const FString address);
-
-	UFUNCTION()
 	void NextMap();
-
-	UFUNCTION()
-	void LeaveServer();
-
-	UFUNCTION()
-	void ExitGame();
 
 	UPROPERTY(EditDefaultsOnly)
 	TArray<TAssetPtr<UWorld>> Levels;
+
+	TArray<FString> ServerNames;
 
 private:
 	UFUNCTION()
@@ -41,10 +32,30 @@ private:
 	UFUNCTION()
 	void OnDestroySessionComplete(FName SessionName, bool Success);
 
+	UFUNCTION()
+	void OnFindSessionsComplete(bool Success);
+
 	void CreateOnlineSession();
 
 	void LoadMap();
 
+	UFUNCTION()
+	virtual void Host() override;
+
+	UFUNCTION()
+	virtual void Join(const FString IPAddress) override;
+
+	UFUNCTION()
+	virtual void PopulateServers() override;
+
+	UFUNCTION()
+	virtual void LeaveServer() override;
+
+	UFUNCTION()
+	void ExitGame() override;
+
 	IOnlineSessionPtr SessionInterface;
 	int LevelIndex = 0;
+
+	TSharedPtr<FOnlineSessionSearch> SessionSearch;
 };

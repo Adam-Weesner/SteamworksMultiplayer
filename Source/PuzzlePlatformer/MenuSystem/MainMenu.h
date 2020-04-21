@@ -9,21 +9,25 @@
 
 class UButton;
 class UWidgetSwitcher;
-class UEditableTextBox;
+class UScrollBox;
 
 UCLASS()
 class PUZZLEPLATFORMER_API UMainMenu : public UMenuWidget
 {
 	GENERATED_BODY()
 
+public:
+	void PopulateServerRows(TArray<FString> ServerNames);
+
 protected:
-	UFUNCTION()
-	virtual void OnHostButtonReleased();
 
 	UFUNCTION()
 	virtual void OnJoinButtonReleased();
 
 	virtual bool BindWidgets() override;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> WBP_ServerRow;
 
 private:
 	UPROPERTY(meta = (BindWidget))
@@ -31,10 +35,13 @@ private:
 
 	// Main menu screen
 	UFUNCTION()
+	void OnHostButtonReleased();
+
+	UFUNCTION()
 	void OnJoinGameButtonReleased();
 
 	UFUNCTION()
-	void OnExitGameButtonReleased();
+	void OnExitButtonReleased();
 
 	UPROPERTY(meta = (BindWidget))
 	UWidget* MainMenu;
@@ -52,15 +59,21 @@ private:
 	UFUNCTION()
 	void OnBackButtonReleased();
 
-	UPROPERTY(meta = (BindWidget))
-	UWidget* JoinMenu;
+	UFUNCTION()
+	void OnRefreshButtonReleased();
 
 	UPROPERTY(meta = (BindWidget))
-	UEditableTextBox* IPAddressTextBox;
+	UWidget* JoinMenu;
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* JoinButton;
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* BackButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* RefreshButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UScrollBox* ServerList;
 };

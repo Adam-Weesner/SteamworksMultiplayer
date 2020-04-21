@@ -2,7 +2,24 @@
 #include "MainMenu.h"
 #include "Components/Button.h"
 #include "Components/WidgetSwitcher.h"
-#include "Components/EditableTextBox.h"
+#include "Components/ScrollBox.h"
+#include "Components/TextBlock.h"
+#include "ServerRow.h"
+
+void UMainMenu::PopulateServerRows(TArray<FString> ServerNames)
+{
+	UWorld* World = GetWorld();
+	if (!ensure(World)) return;
+
+	ServerList->ClearChildren();
+
+	for (const FString& ServerName : ServerNames)
+	{
+		UServerRow* Row = CreateWidget<UServerRow>(World, WBP_ServerRow);
+		Row->ServerName->SetText(FText::FromString(ServerName));
+		ServerList->AddChild(Row);
+	}
+}
 
 bool UMainMenu::BindWidgets()
 {
@@ -12,12 +29,14 @@ bool UMainMenu::BindWidgets()
 	if (!ensure(JoinMenuButton)) return false;
 	if (!ensure(JoinButton)) return false;
 	if (!ensure(BackButton)) return false;
+	if (!ensure(RefreshButton)) return false;
 
 	HostButton->OnReleased.AddDynamic(this, &UMainMenu::OnHostButtonReleased);
 	JoinMenuButton->OnReleased.AddDynamic(this, &UMainMenu::OnJoinGameButtonReleased);
 	JoinButton->OnReleased.AddDynamic(this, &UMainMenu::OnJoinButtonReleased);
 	BackButton->OnReleased.AddDynamic(this, &UMainMenu::OnBackButtonReleased);
-	ExitGameButton->OnReleased.AddDynamic(this, &UMainMenu::OnExitGameButtonReleased);
+	ExitGameButton->OnReleased.AddDynamic(this, &UMainMenu::OnExitButtonReleased);
+	RefreshButton->OnReleased.AddDynamic(this, &UMainMenu::OnRefreshButtonReleased);
 
 	return true;
 }
@@ -25,7 +44,6 @@ bool UMainMenu::BindWidgets()
 void UMainMenu::OnHostButtonReleased()
 {
 	if (!ensure(MenuInterface)) return;
-	
 	MenuInterface->Host();
 }
 
@@ -33,24 +51,27 @@ void UMainMenu::OnJoinGameButtonReleased()
 {
 	if (!ensure(MenuSwitcher)) return;
 	if (!ensure(JoinMenu)) return;
+	if (!ensure(MenuInterface)) return;
+
+	MenuInterface->PopulateServers();
 
 	MenuSwitcher->SetActiveWidget(JoinMenu);
 }
 
-void UMainMenu::OnExitGameButtonReleased()
+void UMainMenu::OnExitButtonReleased()
 {
+	if (!ensure(MenuInterface)) return;
 	MenuInterface->ExitGame();
 }
 
 void UMainMenu::OnJoinButtonReleased()
 {
+	//const FString &ipAddressInput = IPAddressTextBox->GetText().ToString();
+
+	//if (ipAddressInput.IsEmpty()) return;
+
 	if (!ensure(MenuInterface)) return;
-
-	const FString &ipAddressInput = IPAddressTextBox->GetText().ToString();
-
-	if (ipAddressInput.IsEmpty()) return;
-
-	MenuInterface->Join(ipAddressInput);
+	MenuInterface->Join("");
 }
 
 void UMainMenu::OnBackButtonReleased()
@@ -59,4 +80,10 @@ void UMainMenu::OnBackButtonReleased()
 	if (!ensure(MainMenu)) return;
 
 	MenuSwitcher->SetActiveWidget(MainMenu);
+}
+
+void UMainMenu::OnRefreshButtonReleased()
+{
+	if (!ensure(MenuInterface)) return;
+	MenuInterface->PopulateServers();
 }

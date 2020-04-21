@@ -26,13 +26,11 @@ void UInGameMenu::OnBackButtonReleased()
 void UInGameMenu::OnMainMenuButtonReleased()
 {
 	if (!ensure(MenuInterface)) return;
-
 	MenuInterface->LeaveServer();
 }
 
 void UInGameMenu::OnExitGameButtonReleased()
 {
 	if (!ensure(MenuInterface)) return;
-
 	MenuInterface->ExitGame();
 }

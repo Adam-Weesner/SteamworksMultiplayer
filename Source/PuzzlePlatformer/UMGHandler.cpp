@@ -9,21 +9,29 @@ void AUMGHandler::BeginPlay()
 {
 	Super::BeginPlay();
 
-	instance = Cast<UInstance_PuzzlePlatformer>(GetGameInstance());
+	Instance = Cast<UInstance_PuzzlePlatformer>(GetGameInstance());
 }
 
 void AUMGHandler::LoadMenu()
 {
+	Instance = Cast<UInstance_PuzzlePlatformer>(GetGameInstance());
+	if (!ensure(Instance)) return;
+
 	if (!ensure(WBP_MainMenu)) return;
 
 	PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 	if (!ensure(PlayerController)) return;
 
 	UMainMenu* Menu = CreateWidget<UMainMenu>(PlayerController, WBP_MainMenu);
-	if (!ensure(Menu)) return;
+	
+	if (Menu != nullptr)
+	{
+		Menu->PopulateServerRows(Instance->ServerNames);
+	}
 
 	Menu->Setup();
-	Menu->SetMenuInterface(this);
+
+	Menu->SetMenuInterface(Instance);
 }
 
 void AUMGHandler::ToggleInGameMenu()
@@ -37,33 +45,8 @@ void AUMGHandler::ToggleInGameMenu()
 	if (!ensure(Menu)) return;
 
 	Menu->Setup();
-	Menu->SetMenuInterface(this);
-}
 
-void AUMGHandler::Host()
-{
-	if (!ensure(instance)) return;
-	
-	instance->Host();
-}
-
-void AUMGHandler::Join(FString ipAddress)
-{
-	if (!ensure(instance)) return;
-
-	instance->Join(ipAddress);
-}
-
-void AUMGHandler::LeaveServer()
-{
-	if (!ensure(instance)) return;
-
-	instance->LeaveServer();
-}
-
-void AUMGHandler::ExitGame()
-{
-	if (!ensure(instance)) return;
-
-	instance->ExitGame();
+	Instance = Cast<UInstance_PuzzlePlatformer>(GetGameInstance());
+	if (!ensure(Instance)) return;
+	Menu->SetMenuInterface(Instance);
 }

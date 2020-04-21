@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "MenuWidget.h"
+#include "Interface_MainMenu.h"
 #include "InGameMenu.generated.h"
 
 class UButton;

@@ -23,6 +23,7 @@ void UInstance_PuzzlePlatformer::Init()
 		{
 			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UInstance_PuzzlePlatformer::OnSessionComplete);
 			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UInstance_PuzzlePlatformer::OnDestroySessionComplete);
+			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UInstance_PuzzlePlatformer::OnFindSessionsComplete);
 		}
 	}
 	else
@@ -56,10 +57,30 @@ void UInstance_PuzzlePlatformer::OnDestroySessionComplete(FName SessionName, boo
 	}
 }
 
+void UInstance_PuzzlePlatformer::OnFindSessionsComplete(bool Success)
+{
+	if (Success && SessionSearch.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Found session!"));
+		ServerNames.Empty();
+		for (const auto& SearchResult : SessionSearch->SearchResults)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Found session names: %s"), *SearchResult.GetSessionIdStr());
+			ServerNames.Add(SearchResult.GetSessionIdStr());
+		}
+	}
+}
+
 void UInstance_PuzzlePlatformer::CreateOnlineSession()
 {
-	FOnlineSessionSettings SessionSettings;
-	SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings);
+	if (SessionInterface.IsValid())
+	{
+		FOnlineSessionSettings SessionSettings;
+		SessionSettings.bIsLANMatch = true;
+		SessionSettings.bShouldAdvertise = true;
+		SessionSettings.NumPublicConnections = 2;
+		SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings);
+	}
 }
 
 void UInstance_PuzzlePlatformer::Host()
@@ -77,18 +98,18 @@ void UInstance_PuzzlePlatformer::Host()
 	}
 }
 
-void UInstance_PuzzlePlatformer::Join(const FString address)
+void UInstance_PuzzlePlatformer::Join(const FString IPAddress)
 {
 	UEngine* Engine = GetEngine();
 	if (!Engine) return;
-	FString output = "Joining: " + address;
+	FString output = "Joining: " + IPAddress;
 
 	Engine->AddOnScreenDebugMessage(0, 5.0f, FColor::Yellow, output);
 
 	APlayerController* PlayerController = GetFirstLocalPlayerController();
 	if (!ensure(PlayerController)) return;
 
-	PlayerController->ClientTravel(address, ETravelType::TRAVEL_Absolute);
+	PlayerController->ClientTravel(IPAddress, ETravelType::TRAVEL_Absolute);
 }
 
 void UInstance_PuzzlePlatformer::NextMap()
@@ -101,6 +122,16 @@ void UInstance_PuzzlePlatformer::NextMap()
 	}
 
 	LoadMap();
+}
+
+void UInstance_PuzzlePlatformer::PopulateServers()
+{
+	SessionSearch = MakeShareable(new FOnlineSessionSearch());
+	if (SessionSearch.IsValid())
+	{
+		SessionSearch->bIsLanQuery = true;
+		SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
+	}
 }
 
 void UInstance_PuzzlePlatformer::LeaveServer()
