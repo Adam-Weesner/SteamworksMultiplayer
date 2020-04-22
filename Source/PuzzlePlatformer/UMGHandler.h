@@ -24,7 +24,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleInGameMenu();
 
-	void SetServerList(TArray<FString> ServerNames);
+	void SetServerList(TArray<FServerData> ServerNames);
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> WBP_MainMenu;

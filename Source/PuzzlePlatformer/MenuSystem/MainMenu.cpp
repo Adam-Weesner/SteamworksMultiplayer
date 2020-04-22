@@ -6,7 +6,7 @@
 #include "Components/TextBlock.h"
 #include "ServerRow.h"
 
-void UMainMenu::PopulateServerRows(TArray<FString> ServerNames)
+void UMainMenu::PopulateServerRows(TArray<FServerData> ServerNames)
 {
 	UWorld* World = GetWorld();
 	if (!ensure(World)) return;
@@ -15,13 +15,13 @@ void UMainMenu::PopulateServerRows(TArray<FString> ServerNames)
 
 	uint32 i = 0;
 
-	for (const FString& ServerName : ServerNames)
+	for (const FServerData& ServerData : ServerNames)
 	{
 		UServerRow* Row = CreateWidget<UServerRow>(World, WBP_ServerRow);
 
 		if (!ensure(Row)) return;
 
-		Row->ServerName->SetText(FText::FromString(ServerName));
+		Row->SetRowText(ServerData.Name, ServerData.HostUsername, FText::AsNumber(ServerData.CurrentPlayers), FText::AsNumber(ServerData.MaxPlayers));
 		Row->Setup(this, i);
 		++i;
 

@@ -7,6 +7,7 @@
 #include "ServerRow.generated.h"
 
 class UMainMenu;
+class UTextBlock;
 
 UCLASS()
 class PUZZLEPLATFORMER_API UServerRow : public UUserWidget
@@ -21,8 +22,7 @@ public:
 
     void SelectButton(bool Selected);
 
-    UPROPERTY(meta = (BindWidget))
-    class UTextBlock* ServerName;
+    void SetRowText(FText InServerName, FText InHostUsername, FText InCurrentPlayers, FText InMaxPlayers);
 
 protected:
     UPROPERTY(BlueprintReadOnly)
@@ -34,6 +34,18 @@ protected:
 private:
     UPROPERTY(meta = (BindWidget))
     class UButton* RowButton;
+
+    UPROPERTY(meta = (BindWidget))
+    class UTextBlock* ServerName;
+
+    UPROPERTY(meta = (BindWidget))
+    UTextBlock* HostUsername;
+
+    UPROPERTY(meta = (BindWidget))
+    UTextBlock* CurrentPlayers;
+
+    UPROPERTY(meta = (BindWidget))
+    UTextBlock* MaxPlayers;
 
     UMainMenu* Parent;
     uint32 Index;

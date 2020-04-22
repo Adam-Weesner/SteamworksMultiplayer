@@ -11,13 +11,24 @@ class UButton;
 class UWidgetSwitcher;
 class UScrollBox;
 
+USTRUCT()
+struct FServerData 
+{
+	GENERATED_BODY()
+
+	FText Name = FText::FromString("");
+	FText HostUsername = FText::FromString("");
+	uint16 CurrentPlayers = 0;
+	uint16 MaxPlayers = 0;
+};
+
 UCLASS()
 class PUZZLEPLATFORMER_API UMainMenu : public UMenuWidget
 {
 	GENERATED_BODY()
 
 public:
-	void PopulateServerRows(TArray<FString> ServerNames);
+	void PopulateServerRows(TArray<FServerData> ServerNames);
 	void SelectIndex(uint32 Index);
 
 protected:

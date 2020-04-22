@@ -1,6 +1,7 @@
 // Written by Adam Weesner @2020
 #include "ServerRow.h"
 #include "Components/Button.h"
+#include "Components/TextBlock.h"
 #include "MainMenu.h"
 
 void UServerRow::Setup(UMainMenu* InParent, uint32 InIndex)
@@ -19,7 +20,6 @@ void UServerRow::OnRowButtonReleased()
 
 void UServerRow::SelectButton(bool Selected)
 {
-	UE_LOG(LogTemp, Warning, TEXT("TEst: %b"), Selected);
 	this->IsSelected = Selected;
 
 	if (IsSelected)
@@ -30,4 +30,12 @@ void UServerRow::SelectButton(bool Selected)
 	{
 		SetColorAndOpacity(FLinearColor::White);
 	}
+}
+
+void UServerRow::SetRowText(FText InServerName, FText InHostUsername, FText InCurrentPlayers, FText InMaxPlayers)
+{
+	ServerName->SetText(InServerName);
+	HostUsername->SetText(InHostUsername);
+	CurrentPlayers->SetText(InCurrentPlayers);
+	MaxPlayers->SetText(InMaxPlayers);
 }

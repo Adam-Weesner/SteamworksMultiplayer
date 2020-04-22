@@ -63,12 +63,17 @@ void UInstance_PuzzlePlatformer::OnFindSessionsComplete(bool Success)
 	if (Success && SessionSearch.IsValid())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Found session!"));
-		TArray<FString> ServerNames;
+		TArray<FServerData> ServerNames;
 
 		for (const auto& SearchResult : SessionSearch->SearchResults)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Found session names: %s"), *SearchResult.GetSessionIdStr());
-			ServerNames.Add(SearchResult.GetSessionIdStr());
+			FServerData Data;
+			Data.Name = FText::FromString(SearchResult.GetSessionIdStr());
+			Data.HostUsername = FText::FromString(SearchResult.Session.OwningUserName);
+			Data.CurrentPlayers = SearchResult.Session.NumOpenPublicConnections;
+			Data.MaxPlayers = SearchResult.Session.SessionSettings.NumPublicConnections;
+			ServerNames.Add(Data);
 		}
  
 		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();

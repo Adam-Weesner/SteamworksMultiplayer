@@ -45,7 +45,7 @@ void AUMGHandler::ToggleInGameMenu()
 	InGameMenu->SetMenuInterface(Instance);
 }
 
-void AUMGHandler::SetServerList(TArray<FString> ServerNames)
+void AUMGHandler::SetServerList(TArray<FServerData> ServerNames)
 {
 	if (Menu != nullptr)
 	{
