@@ -81,13 +81,12 @@ void UMainMenu::OnJoinButtonReleased()
 {
 	if (SelectedAddressIndex.IsSet())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Selected Index: %d"), SelectedAddressIndex.GetValue());
 		if (!ensure(MenuInterface)) return;
 		MenuInterface->Join(SelectedAddressIndex.GetValue());
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ERROR - Select a server!"));
+		UE_LOG(LogTemp, Error, TEXT("ERROR - Select a server!"));
 	}
 }
 

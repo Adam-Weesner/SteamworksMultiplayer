@@ -13,8 +13,6 @@ UInstance_PuzzlePlatformer::UInstance_PuzzlePlatformer(const FObjectInitializer&
 
 void UInstance_PuzzlePlatformer::Init()
 {
-
-
 	IOnlineSubsystem* Subsystem = IOnlineSubsystem::Get();
 	if (Subsystem != nullptr) 
 	{
@@ -31,7 +29,7 @@ void UInstance_PuzzlePlatformer::Init()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ERROR - Found no subsystem!"));
+		UE_LOG(LogTemp, Error, TEXT("ERROR - Found no subsystem!"));
 	}
 }
 
@@ -39,7 +37,7 @@ void UInstance_PuzzlePlatformer::OnSessionComplete(FName SessionName, bool Succe
 {
 	if (!Success)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ERROR - Couldn't create session!"));
+		UE_LOG(LogTemp, Error, TEXT("ERROR - Couldn't create session!"));
 		return;
 	}
 
@@ -110,8 +108,9 @@ void UInstance_PuzzlePlatformer::CreateOnlineSession()
 	if (SessionInterface.IsValid())
 	{
 		FOnlineSessionSettings SessionSettings;
-		SessionSettings.bIsLANMatch = true;
+		SessionSettings.bIsLANMatch = false;
 		SessionSettings.bShouldAdvertise = true;
+		SessionSettings.bUsesPresence = true;
 		SessionSettings.NumPublicConnections = 2;
 		SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings);
 	}
@@ -145,7 +144,8 @@ void UInstance_PuzzlePlatformer::PopulateServers()
 	SessionSearch = MakeShareable(new FOnlineSessionSearch());
 	if (SessionSearch.IsValid())
 	{
-		SessionSearch->bIsLanQuery = true;
+		SessionSearch->MaxSearchResults = 100;
+		SessionSearch->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
 		SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
 	}
 }
