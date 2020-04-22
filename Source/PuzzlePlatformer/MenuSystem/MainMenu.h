@@ -33,6 +33,8 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UWidgetSwitcher* MenuSwitcher;
 
+	void UpdateChildren();
+
 	// Main menu screen
 	UFUNCTION()
 	void OnHostButtonReleased();

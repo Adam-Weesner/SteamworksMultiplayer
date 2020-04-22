@@ -52,6 +52,21 @@ bool UMainMenu::BindWidgets()
 void UMainMenu::SelectIndex(uint32 Index)
 {
 	SelectedAddressIndex = Index;
+	UpdateChildren();
+}
+
+void UMainMenu::UpdateChildren()
+{
+	for (int32 i = 0; i < ServerList->GetChildrenCount(); ++i)
+	{
+		auto row = Cast<UServerRow>(ServerList->GetChildAt(i));
+
+		if (row != nullptr)
+		{
+			bool IsSelected = SelectedAddressIndex.IsSet() && SelectedAddressIndex.GetValue() == i;
+			row->SelectButton(IsSelected);
+		}
+	}
 }
 
 void UMainMenu::OnHostButtonReleased()

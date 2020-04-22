@@ -19,9 +19,17 @@ public:
     UFUNCTION()
     void OnRowButtonReleased();
 
+    void SelectButton(bool Selected);
+
     UPROPERTY(meta = (BindWidget))
     class UTextBlock* ServerName;
 
+protected:
+    UPROPERTY(BlueprintReadOnly)
+    bool IsSelected = false;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FLinearColor SelectedColor = FLinearColor::Green;
 
 private:
     UPROPERTY(meta = (BindWidget))

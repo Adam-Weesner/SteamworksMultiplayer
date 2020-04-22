@@ -64,6 +64,7 @@ void UInstance_PuzzlePlatformer::OnFindSessionsComplete(bool Success)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Found session!"));
 		TArray<FString> ServerNames;
+
 		for (const auto& SearchResult : SessionSearch->SearchResults)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Found session names: %s"), *SearchResult.GetSessionIdStr());
@@ -108,7 +109,17 @@ void UInstance_PuzzlePlatformer::CreateOnlineSession()
 	if (SessionInterface.IsValid())
 	{
 		FOnlineSessionSettings SessionSettings;
-		SessionSettings.bIsLANMatch = false;
+		IOnlineSubsystem* Subsystem = IOnlineSubsystem::Get();
+
+		if (Subsystem->GetSubsystemName() == "NULL")
+		{
+			SessionSettings.bIsLANMatch = true;
+		}
+		else
+		{
+			SessionSettings.bIsLANMatch = false;
+		}
+
 		SessionSettings.bShouldAdvertise = true;
 		SessionSettings.bUsesPresence = true;
 		SessionSettings.NumPublicConnections = 2;
@@ -136,6 +147,7 @@ void UInstance_PuzzlePlatformer::Join(const uint32 Index)
 	if (!SessionInterface.IsValid()) return;
 	if (!SessionSearch.IsValid()) return;
 
+	SessionInterface->RemoveNamedSession(SESSION_NAME);
 	SessionInterface->JoinSession(0, SESSION_NAME, SessionSearch->SearchResults[Index]);
 }
 
