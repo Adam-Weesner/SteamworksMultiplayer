@@ -30,11 +30,11 @@ private:
 	void OnFindSessionsComplete(bool Success);
 	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 
-	void CreateOnlineSession();
+	void CreateOnlineSession(const FString ServerName);
 	void LoadMap();
 
 	UFUNCTION()
-	virtual void Host() override;
+	virtual void Host(const FString ServerName) override;
 
 	UFUNCTION()
 	virtual void Join(const uint32 Address) override;

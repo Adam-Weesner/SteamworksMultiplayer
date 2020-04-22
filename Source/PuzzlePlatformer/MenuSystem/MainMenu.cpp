@@ -4,6 +4,7 @@
 #include "Components/WidgetSwitcher.h"
 #include "Components/ScrollBox.h"
 #include "Components/TextBlock.h"
+#include "Components/EditableTextBox.h"
 #include "ServerRow.h"
 
 void UMainMenu::PopulateServerRows(TArray<FServerData> ServerNames)
@@ -38,13 +39,17 @@ bool UMainMenu::BindWidgets()
 	if (!ensure(JoinButton)) return false;
 	if (!ensure(BackButton)) return false;
 	if (!ensure(RefreshButton)) return false;
-
+	if (!ensure(HostBackButton)) return false;
+	if (!ensure(HostGameButton)) return false;
+	
 	HostButton->OnReleased.AddDynamic(this, &UMainMenu::OnHostButtonReleased);
 	JoinMenuButton->OnReleased.AddDynamic(this, &UMainMenu::OnJoinGameButtonReleased);
 	JoinButton->OnReleased.AddDynamic(this, &UMainMenu::OnJoinButtonReleased);
 	BackButton->OnReleased.AddDynamic(this, &UMainMenu::OnBackButtonReleased);
 	ExitGameButton->OnReleased.AddDynamic(this, &UMainMenu::OnExitButtonReleased);
 	RefreshButton->OnReleased.AddDynamic(this, &UMainMenu::OnRefreshButtonReleased);
+	HostBackButton->OnReleased.AddDynamic(this, &UMainMenu::OnHostBackButtonReleased);
+	HostGameButton->OnReleased.AddDynamic(this, &UMainMenu::OnHostGameButtonReleased);
 
 	return true;
 }
@@ -71,8 +76,10 @@ void UMainMenu::UpdateChildren()
 
 void UMainMenu::OnHostButtonReleased()
 {
-	if (!ensure(MenuInterface)) return;
-	MenuInterface->Host();
+	if (!ensure(MenuSwitcher)) return;
+	if (!ensure(HostMenu)) return;
+
+	MenuSwitcher->SetActiveWidget(HostMenu);
 }
 
 void UMainMenu::OnJoinGameButtonReleased()
@@ -117,4 +124,19 @@ void UMainMenu::OnRefreshButtonReleased()
 {
 	if (!ensure(MenuInterface)) return;
 	MenuInterface->PopulateServers();
+}
+
+void UMainMenu::OnHostBackButtonReleased()
+{
+	if (!ensure(MenuSwitcher)) return;
+	if (!ensure(MainMenu)) return;
+
+	MenuSwitcher->SetActiveWidget(MainMenu);
+}
+
+void UMainMenu::OnHostGameButtonReleased()
+{
+	if (!ensure(MenuInterface)) return;
+	if (!ensure(HostGameName)) return;
+	MenuInterface->Host(HostGameName->GetText().ToString());
 }

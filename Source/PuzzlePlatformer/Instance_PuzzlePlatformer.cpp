@@ -6,6 +6,7 @@
 #include "UMGHandler.h"
 
 const static FName SESSION_NAME = TEXT("My Current Session");
+const static FName SERVER_NAME_SETTINGS_KEY = TEXT("ServerName");
 
 UInstance_PuzzlePlatformer::UInstance_PuzzlePlatformer(const FObjectInitializer& ObjectInitializer)
 {
@@ -54,7 +55,7 @@ void UInstance_PuzzlePlatformer::OnDestroySessionComplete(FName SessionName, boo
 {
 	if (Success)
 	{
-		CreateOnlineSession();
+		CreateOnlineSession("");
 	}
 }
 
@@ -68,11 +69,24 @@ void UInstance_PuzzlePlatformer::OnFindSessionsComplete(bool Success)
 		for (const auto& SearchResult : SessionSearch->SearchResults)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Found session names: %s"), *SearchResult.GetSessionIdStr());
+
 			FServerData Data;
-			Data.Name = FText::FromString(SearchResult.GetSessionIdStr());
 			Data.HostUsername = FText::FromString(SearchResult.Session.OwningUserName);
-			Data.CurrentPlayers = SearchResult.Session.NumOpenPublicConnections;
 			Data.MaxPlayers = SearchResult.Session.SessionSettings.NumPublicConnections;
+			Data.CurrentPlayers = Data.MaxPlayers - SearchResult.Session.NumOpenPublicConnections;
+
+			FString ServerName;
+			if (SearchResult.Session.SessionSettings.Get(SERVER_NAME_SETTINGS_KEY, ServerName))
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Data found in settings: %s"), *ServerName);
+				Data.Name = FText::FromString(ServerName);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("ERROR - Didn't find data"));
+				Data.Name = FText::FromString(SearchResult.GetSessionIdStr());
+			}
+
 			ServerNames.Add(Data);
 		}
  
@@ -109,7 +123,7 @@ void UInstance_PuzzlePlatformer::OnJoinSessionComplete(FName SessionName, EOnJoi
 	}
 }
 
-void UInstance_PuzzlePlatformer::CreateOnlineSession()
+void UInstance_PuzzlePlatformer::CreateOnlineSession(const FString ServerName)
 {
 	if (SessionInterface.IsValid())
 	{
@@ -128,11 +142,12 @@ void UInstance_PuzzlePlatformer::CreateOnlineSession()
 		SessionSettings.bShouldAdvertise = true;
 		SessionSettings.bUsesPresence = true;
 		SessionSettings.NumPublicConnections = 2;
+		SessionSettings.Set(SERVER_NAME_SETTINGS_KEY, ServerName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 		SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings);
 	}
 }
 
-void UInstance_PuzzlePlatformer::Host()
+void UInstance_PuzzlePlatformer::Host(const FString ServerName)
 {
 	if (!ensure(SessionInterface)) return;
 
@@ -143,7 +158,7 @@ void UInstance_PuzzlePlatformer::Host()
 	}
 	else
 	{
-		CreateOnlineSession();
+		CreateOnlineSession(ServerName);
 	}
 }
 

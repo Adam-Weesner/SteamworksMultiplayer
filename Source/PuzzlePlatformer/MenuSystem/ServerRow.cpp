@@ -36,6 +36,6 @@ void UServerRow::SetRowText(FText InServerName, FText InHostUsername, FText InCu
 {
 	ServerName->SetText(InServerName);
 	HostUsername->SetText(InHostUsername);
-	CurrentPlayers->SetText(InCurrentPlayers);
-	MaxPlayers->SetText(InMaxPlayers);
+	FText PlayersFraction = FText::FromString(InCurrentPlayers.ToString() + "/" + InMaxPlayers.ToString());
+	Players->SetText(PlayersFraction);
 }

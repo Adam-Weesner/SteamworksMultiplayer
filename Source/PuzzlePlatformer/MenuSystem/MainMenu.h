@@ -90,5 +90,24 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UScrollBox* ServerList;
 
+	// Host game screen
+	UFUNCTION()
+	void OnHostBackButtonReleased();
+
+	UFUNCTION()
+	void OnHostGameButtonReleased();
+
+	UPROPERTY(meta = (BindWidget))
+	UWidget* HostMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* HostBackButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* HostGameButton;
+
+	UPROPERTY(meta = (BindWidget))
+	class UEditableTextBox* HostGameName;
+
 	TOptional<uint32> SelectedAddressIndex;
 };

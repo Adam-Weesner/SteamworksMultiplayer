@@ -36,16 +36,13 @@ private:
     class UButton* RowButton;
 
     UPROPERTY(meta = (BindWidget))
-    class UTextBlock* ServerName;
+    UTextBlock* ServerName;
 
     UPROPERTY(meta = (BindWidget))
     UTextBlock* HostUsername;
 
     UPROPERTY(meta = (BindWidget))
-    UTextBlock* CurrentPlayers;
-
-    UPROPERTY(meta = (BindWidget))
-    UTextBlock* MaxPlayers;
+    UTextBlock* Players;
 
     UMainMenu* Parent;
     uint32 Index;
