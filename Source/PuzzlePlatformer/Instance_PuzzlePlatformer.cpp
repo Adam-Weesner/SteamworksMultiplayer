@@ -4,8 +4,9 @@
 #include "Misc/Paths.h"
 #include "GameFramework/PlayerController.h"
 #include "UMGHandler.h"
+#include "UObject/UnrealNames.h"
 
-const static FName SESSION_NAME = TEXT("My Current Session");
+const static FName SESSION_NAME = NAME_GameSession;
 const static FName SERVER_NAME_SETTINGS_KEY = TEXT("ServerName");
 
 UInstance_PuzzlePlatformer::UInstance_PuzzlePlatformer(const FObjectInitializer& ObjectInitializer)
