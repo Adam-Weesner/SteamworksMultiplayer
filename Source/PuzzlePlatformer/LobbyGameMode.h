@@ -14,6 +14,9 @@ protected:
 	void Logout(AController* Exiting) override;
 
 private:
+	void StartTransition();
+
 	uint16 PlayerCount = 0;
 	uint16 MaxPlayerCountToTransition = 2;
+	float TransitionWaitTime = 10.0f;
 };

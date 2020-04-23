@@ -21,6 +21,8 @@ public:
 	UFUNCTION()
 	void NextMap();
 
+	void StartSession();
+
 	UPROPERTY(EditDefaultsOnly)
 	TArray<TAssetPtr<UWorld>> Levels;
 

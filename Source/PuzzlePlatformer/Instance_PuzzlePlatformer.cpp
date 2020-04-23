@@ -142,7 +142,7 @@ void UInstance_PuzzlePlatformer::CreateOnlineSession(const FString ServerName)
 
 		SessionSettings.bShouldAdvertise = true;
 		SessionSettings.bUsesPresence = true;
-		SessionSettings.NumPublicConnections = 2;
+		SessionSettings.NumPublicConnections = 5;
 		SessionSettings.Set(SERVER_NAME_SETTINGS_KEY, ServerName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 		SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings);
 	}
@@ -211,6 +211,14 @@ void UInstance_PuzzlePlatformer::NextMap()
 	}
 
 	LoadMap();
+}
+
+void UInstance_PuzzlePlatformer::StartSession()
+{
+	if (SessionInterface.IsValid())
+	{
+		SessionInterface->StartSession(SESSION_NAME);
+	}
 }
 
 void UInstance_PuzzlePlatformer::LoadMap()
